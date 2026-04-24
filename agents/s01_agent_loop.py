@@ -33,9 +33,10 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 
 if os.getenv("ANTHROPIC_BASE_URL"):
-    os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)
-
-client = Anthropic(base_url=os.getenv("ANTHROPIC_BASE_URL"))
+    auth_token = os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)
+    client = Anthropic(base_url=os.getenv("ANTHROPIC_BASE_URL"), api_key=auth_token)
+else:
+    client = Anthropic()
 MODEL = os.environ["MODEL_ID"]
 
 SYSTEM = f"You are a coding agent at {os.getcwd()}. Use bash to solve tasks. Act, don't explain."
